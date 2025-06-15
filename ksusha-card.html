@@ -1,0 +1,192 @@
+﻿<div style="text-align: center; font-family: 'Comic Sans MS', cursive, sans-serif; background: transparent; padding: 20px;">
+    <h2 style="color: #4e342e; font-size: 26px;">🥳 Ксюша, з 45-річчям! 🥳</h2>
+    <p style="color: #6d4c41;">НАТИСКАЙ — ДОДАЙ КВІТКУ!</p>
+
+    <div id="capture" style="position: relative; max-width: 600px; margin: auto;">
+        <img id="vase" src="https://i.postimg.cc/fRFSskh4/pngwing-com-8.png" style="width: 100%; max-width: 100%; height: auto;">
+        <div id="flowers-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <button onclick="addFlower()" class="fancy-button">➕ Додати квітку</button>
+        <button onclick="clearFlowers()" class="fancy-button" style="background-color: #8d6e63;">🧹 Очистити</button>
+    </div>
+
+    <p id="final-message" style="margin-top: 20px; font-size: 20px; color: #4caf50; display: none;">🌸 Квіти, любов, радість — святкуємо! 🌸</p>
+</div>
+
+<style>
+    .fancy-button {
+        margin: 6px;
+        background-color: #795548;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 20px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        animation: pulse 2s infinite;
+    }
+
+        .fancy-button:hover {
+            background-color: #5d4037;
+        }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .flower {
+        position: absolute;
+        width: 60px;
+        animation: floatIn 1s ease-out forwards, rotateFlower 4s linear infinite;
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    .compliment {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.85);
+        color: #3e2723;
+        padding: 6px 10px;
+        font-size: 14px;
+        border-radius: 12px;
+        max-width: 140px;
+        text-align: center;
+        animation: fadeIn 1s ease-in;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    .eng {
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-weight: normal !important;
+    }
+
+    @keyframes floatIn {
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes rotateFlower {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+
+<script>
+  const wishes = [
+    "Ксюша, ти — наш <span class='eng'>Wi-Fi</span> щастя!",
+    "Ти — <span class='eng'>iOS</span> життя з душею.",
+    "Яскраві <span class='eng'>сторіз</span> твого 45-річчя!",
+    "Як <span class='eng'>Google</span> — знаєш все і цінуємо.",
+    "45 — це версія найкраща!",
+    "Твоя енергія — як <span class='eng'>power bank</span> для нас.",
+    "Ти — <span class='eng'>Bluetooth</span> зв’язок нашої родини.",
+    "Постійний апгрейд твого тепла.",
+    "Ти — <span class='eng'>хмара</span> ніжності і любові.",
+    "Твій сміх — найкращий <span class='eng'>динамік</span> у світі.",
+    "Ти — наш <span class='eng'>антивірус</span> від смутку.",
+    "Ніколи не зависаєш — завжди на висоті.",
+    "Ти — <span class='eng'>блогер</span> настрою для всіх нас.",
+    "Ти — улюблений <span class='eng'>застосунок</span> у нашому житті.",
+    "Життя твоє — як найкращий <span class='eng'>Netflix</span>-серіал.",
+    "Вік — це лише цифра, ти — безцінна.",
+    "Твій досвід — <span class='eng'>преміум-доступ</span> до радості.",
+    "Новий сезон Ксюші — найкращий за всі роки!",
+    "Ти — <span class='eng'>фільтр</span> краси і добра для світу.",
+    "Твій смак — це <span class='eng'>Pinterest</span> натхнення.",
+    "Ти заслуговуєш тільки 5 зірок!",
+    "Твоя радість — як <span class='eng'>push-нотифікація</span> в серці.",
+    "Ти — <span class='eng'>TikTok</span> енергія і драйв одночасно.",
+    "Твоє товариство — <span class='eng'>лайк</span> кожного дня.",
+    "Усмішка твоя — найкращий <span class='eng'>смайл</span>!",
+    "Ти — як спокій без реклами в житті.",
+    "Твій день — справжній <span class='eng'>флешмоб</span> веселощів.",
+    "<span class='eng'>Wi-Fi</span> твоєї любові ніколи не зникає.",
+    "Ти — <span class='eng'>Instagram</span> тренд нашої родини.",
+    "Ти — найцінніший контакт у моєму житті.",
+    "Спілкування з тобою — <span class='eng'>YouTube Premium</span> без реклами.",
+    "Твоя доброта — <span class='eng'>фільтр</span> реальності.",
+    "Ти — постійний <span class='eng'>glow-up</span> краси й мудрості.",
+    "Твій голос — <span class='eng'>навушники</span> душі.",
+    "Твоє серце — як <span class='eng'>SSD</span>, швидке і надійне.",
+    "Життя твоє — рівень “легенда” у грі.",
+    "Твоя любов — <span class='eng'>VPN</span> захист від всього поганого.",
+    "Ти — ідеальний <span class='eng'>update</span> без багів.",
+    "Ти — душевний <span class='eng'>спам</span> лише тепла й підтримки.",
+    "Твої розмови — найкращий <span class='eng'>подкаст</span> на світі.",
+    "Твій інтерфейс — завжди сяючий і милий.",
+    "Ти — найцінніша галерея пам’яті в серці.",
+    "Ти — наш домашній <span class='eng'>Wi-Fi</span> без перебоїв.",
+    "Ти — хештег #<span class='eng'>найкращасестра</span> завжди!",
+    "Твій день — плейліст щастя і гармонії."
+  ];
+
+  const flowerImages = [
+    "https://i.postimg.cc/sDTZnw6g/pngwing-com-9.png",
+    "https://i.postimg.cc/HsYy4ftN/pngwing-com-11.png",
+    "https://i.postimg.cc/vZDxCfkL/pngwing-com-10.png"
+  ];
+
+  let flowerCount = 0;
+
+  function addFlower() {
+    const container = document.getElementById('flowers-container');
+    const flower = document.createElement('img');
+    flower.src = flowerImages[flowerCount % flowerImages.length];
+    flower.className = 'flower';
+
+    flower.style.top = Math.random() * 60 + "%";
+    flower.style.left = Math.random() * 80 + "%";
+
+    container.appendChild(flower);
+
+    const text = document.createElement('div');
+    text.className = 'compliment';
+    text.innerHTML = wishes[flowerCount % wishes.length];
+    text.style.top = (parseFloat(flower.style.top) + 5) + "%";
+    text.style.left = (parseFloat(flower.style.left) + 3) + "%";
+    container.appendChild(text);
+
+    flowerCount++;
+
+    if (flowerCount >= 45) {
+      document.getElementById('final-message').style.display = 'block';
+    }
+  }
+
+  function clearFlowers() {
+    const container = document.getElementById('flowers-container');
+    container.innerHTML = '';
+    document.getElementById('final-message').style.display = 'none';
+    flowerCount = 0;
+  }
+</script>
